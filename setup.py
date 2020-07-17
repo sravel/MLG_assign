@@ -44,18 +44,20 @@ def main():
         package_data={
                     'MLG_assign'         : ['*.ini'],
                     'MLG_assign.excel'   : ['*.xlsx'],
+                    'MLG_assign.gooey'   : ['./includes/*.png'],
         },
         include_package_data=True,
         install_requires=[
             'pandas>=1.0.0',
-            'openpyxl>=2.6.0'
+            'openpyxl>=2.6.0',
+            'gooey>=1.0.4.0'
         ],
         options={
             'bdist_wheel':
                 {'universal': True}
         },
         zip_safe=False,  # Don't install the lib as an .egg zipfile
-        entry_points={'console_scripts': ["MLG-assign = MLG_assign:main"]},
+        entry_points={'console_scripts': ["MLG_assign = MLG_assign:main"]},
     )
 
 if __name__ == '__main__':

@@ -25,8 +25,9 @@ import numpy as np
 import pandas as pd
 from openpyxl import load_workbook
 
-# from gooey import Gooey, GooeyParser
-# remove pandas header styles
+from gooey import Gooey, GooeyParser
+# remove pandas header
+# styles
 # this avoids the restriction that xlsxwriter cannot
 # format cells where formatting was already applied
 import pandas.io.formats.excel
@@ -38,12 +39,12 @@ pandas.set_option('display.precision', 0)  # formate le nombre de chiffre après
 ##################################################
 # Variables Globales
 
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 epilogTools = ""
 
 descriptionTools = f"""
 {'#' * 80}
-# Add MLG on execl file with table like :
+# Add MLG on excel file with table like :
 {'_' * 67}
 |{'':^10}|{'Pymrs47':^10}|{'Pyrms427':^10}|{'Pyrms657':^10}|{'Pyrms77':^10}|{'Pyrms63':^10}|
 {'-' * 67}
@@ -56,6 +57,7 @@ descriptionTools = f"""
 {'#' * 80}
 """
 
+LICENSE = open("LICENSE","r").read()
 
 ##################################################
 # Functions
@@ -146,31 +148,70 @@ def existant_file(x):
     return Path(x).resolve()
 
 
-# @Gooey(
-#         # advanced=True,
-#         # header_height=250,
-#         # header_bg_color="#f0f0f0",
-#
-#         # dump_build_config=True,
-#         # image_dir="./includes/"
-# )
-# def main():
-#     parser = GooeyParser(prog='MLGassign.py',
-#                          description=descriptionTools,
-#                          epilog=epilogTools)
-#
-#     inOutMandatory = parser.add_argument_group('Input mandatory infos for running', gooey_options={
-#             'columns': 1
-#     })
-#
-#     inOutMandatory.add_argument('-x', '--excel', metavar="Excel filename", widget='FileChooser', type=existant_file,
-#                                 required=True, dest='excel_file', help='matrice excel file')
-#     inOutMandatory.add_argument('-s', '--sheet', metavar="Name of Sheet", required=True, dest='sheet_name',
-#                                 help='name of sheet in excel file')
-#
-#     args = parser.parse_args()
-#
-#     return args
+@Gooey(
+        advanced=True,              # toggle whether to show advanced config or not
+        show_config=True,           # skip config screens all together
+        header_height=250,
+        header_bg_color="#f0f0f0",
+        default_size=(1000,700),    # starting size of the GUI
+        fullscreen=False,
+        dump_build_config=False,     # Dump the JSON Gooey uses to configure itself
+        image_dir="./includes/",
+        disable_stop_button=True,
+        show_failure_modal=False,
+        show_success_modal=True,
+        richtext_controls=False,
+        menu=[
+                {
+                'name' : 'Example',
+                'items': [
+                        {
+                        'type'     : 'Link',
+                        'menuTitle': 'Download example file',
+                        'url'      : 'https://github.com/sravel/MLG_assign/raw/master/Test_MLG.xlsx'
+                    }],
+                },
+                {
+                'name' : 'Help',
+                'items': [{
+                        'type'     : 'Link',
+                        'menuTitle': 'Documentation',
+                        'url'      : 'https://github.com/sravel/MLG_assign'
+                        },
+                        {
+                        'type'       : 'AboutDialog',
+                        'menuTitle'  : 'About',
+                        'name'       : 'MLG assign',
+                        'description': 'Multi-Locus Genotypes assign',
+                        'version'    : __version__,
+                        'copyright'  : '2020',
+                        'website'    : 'https://github.com/sravel/MLG_assign',
+                        'developer'  : 'Sébastien RAVEL/',
+                        'license'    : LICENSE
+                        }
+                    ]
+                }
+        ]
+)
+def GUI():
+    parser = GooeyParser(prog='MLG_assign',
+                         description=descriptionTools,
+                         epilog=epilogTools
+                         )
+
+    inOutMandatory = parser.add_argument_group('Input mandatory infos for running', gooey_options={
+            'columns': 1
+    })
+
+    inOutMandatory.add_argument('-x', '--excel', metavar="Excel filename", widget='FileChooser', type=existant_file,
+                                required=True, dest='excel_file', help='matrice excel file')
+    inOutMandatory.add_argument('-s', '--sheet', metavar="Name of Sheet", required=True, dest='sheet_name',
+                                help='name of sheet in excel file')
+    # inOutMandatory.add_argument('-d', '--debug', action='store_true', help='enter verbose/debug mode')
+
+    args = parser.parse_args()
+
+    return args
 
 def main():
 
@@ -178,60 +219,68 @@ def main():
 
     inOutOptional = parserOther.add_argument_group('Input infos not mandatory')
     inOutOptional.add_argument('-v', '--version', action='version', version=__version__,
-                               help=f'Use if you want to know which version of {__file__} you are using')
+                               help=f'Use if you want to know which version of {Path(__file__).stem} you are using')
     inOutOptional.add_argument('-h', '--help', action='help', help=f'show this help message and exit')
-    inOutOptional.add_argument('-d', '--debug', action='store_true', help='enter verbose/debug mode')
-    # inOutOptional.add_argument('-g', '--gui', action='store_true', help='use graphic mode')
+    # inOutOptional.add_argument('-d', '--debug', action='store_true', help='enter verbose/debug mode')
 
     parserMandatory = argparse.ArgumentParser(
             parents=[parserOther],
             add_help=False,
-            prog=__file__,
+            prog=Path(__file__).stem,
             formatter_class=argparse.RawDescriptionHelpFormatter,
             description=descriptionTools,
             epilog=epilogTools
     )
-
-    inOutMandatory = parserMandatory.add_argument_group('Input mandatory infos for running')
+    # Creer un sous parser
+    subparsers = parserMandatory.add_subparsers(dest='mode', help=f'Select mode to run {Path(__file__).stem}')
+    parserMandatory.set_defaults(mode="gui")
+    # create the parser for the "cmd" command
+    parser_cmd = subparsers.add_parser('cmd', help='active CMD mode')
+    inOutMandatory = parser_cmd.add_argument_group('Input mandatory infos for running')
     inOutMandatory.add_argument('-e', '--excel', metavar="<path/to/file/Excel>", type=existant_file, required=True,
                                 dest='excel_file', help='Matrix excel file')
     inOutMandatory.add_argument('-s', '--sheet', metavar="sheet name>", type=str, required=True,
                                 dest='sheet_name', help='Name of sheet in excel file')
+    # create the parser for the "gui" command
+    parser_GUI = subparsers.add_parser('gui', help='enter GUI mode')
+    parser_GUI.set_defaults()
+
 
     # Check parameters
     args = parserMandatory.parse_args()
 
-    # Check parameters
-    # if args.gui:
-    #     args = main()
+    if args.mode == "gui":
+        args = GUI()
 
     # Welcome message
     print(
             f"""{"#" * 80}\n#{Path(__file__).stem + " " + __version__:^78}#\n{"#" * 80}\nStart time: {datetime.now():%d-%m-%Y at %H:%M:%S}\nCommande line run: {" ".join(sys.argv)}\n""")
     # resume to user
-    print(" - Intput Info:")
+    print(" - Intput info:")
     for k, v in vars(args).items():
         print(f"\t - {k}: {v}")
+
 
     # Récupère les arguments
     excel_file = args.excel_file
     sheet_name = args.sheet_name
-    debug = args.debug
-
+    final_sheet_name = f"{args.sheet_name}_MLG"
+    # debug = args.debug
+    print(" - Output info:")
+    print(f"\t - final sheet with MLG will be:{final_sheet_name}\n")
     try:
         with pd.ExcelWriter(excel_file, engine='openpyxl', mode='a') as writer:
 
             workBookbAll = load_workbook(excel_file)
             if sheet_name not in workBookbAll:
                 raise NameError(f"\n\nERROR: Sheet {sheet_name} does not exist on file {excel_file}")
-
+            if final_sheet_name in workBookbAll:
+                raise NameError(f"\n\nERROR: MLG already exist, maybe script already run see sheet {final_sheet_name}")
             df = pd.read_excel(writer, sheet_name=sheet_name, index_col=0)
-            if "MLG" in df.columns.tolist():
-                raise NameError("\n\nERROR: MLG column already exist, maybe script already run")
             df.MLG = ""
 
-            workBookbAll.remove(workBookbAll[sheet_name])
-            writer.book = workBookbAll
+            # workBookbAll.remove(workBookbAll[sheet_name])
+            # writer.book = workBookbAll
 
             dicoMLGUnique = {}  # clé n marqueurs valeur MLG
             dicoMissing = {}
@@ -281,17 +330,15 @@ def main():
                         MLG += 1
                 else:
                     df.at[ID, "MLG"] = "NaN"
-            if debug:
-                print(f"Final matrix header:\n{df.head(30)}")
-
-            df.to_excel(writer, sheet_name=sheet_name, merge_cells=False, na_rep="nd")
-
+            # if debug:
+            print(f"Final matrix header:\n{df.head(30)}")
+            df.to_excel(writer, sheet_name=final_sheet_name, merge_cells=False, na_rep="nd")
             writer.save()
     except NameError as e:
         print(e)
         sys.exit(1)
-    except Exception as e:
-        print(f"\n\nERROR: please check if file is not open: {excel_file}")
+    except KeyError as e:
+        print(f"\n\nERROR: please check if file is not open: {excel_file}\n{e}")
         sys.exit(1)
 
     print(f"""\nStop time: {datetime.now():%d-%m-%Y at %H:%M:%S}\n{'#' * 80}\n#{'End of execution':^78}#\n{"#" * 80}""")
