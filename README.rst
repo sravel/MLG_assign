@@ -1,8 +1,8 @@
-==========================
-Multi-Locus Genotypes apps
-==========================
+=============================
+Multi-Locus Genotypes assign
+=============================
 
-|PythonVersions| |PypiPackage| |Downloads|
+|PythonVersions| |PypiPackage|
 
 Multi-Locus Genotypes (MLGs) are frequently used to carry out population
 genetics of clonal organisms. Tools to assign genotyped individuals to
@@ -42,7 +42,7 @@ Install
 ::
 
     # not working yet, in development
-    pip3 install mlgapp
+    pip3 install MLGassign
 
 
 Usage
@@ -52,11 +52,11 @@ Usage
 .. code-block:: bash
 
     # see help
-    correctMLG.py -h
+    MLGassign.py -h
 
     Input infos not mandatory:
       -v, --version         Use if you want to know which version of
-                            ./correctMLG.py you are using
+                            MLGassign.py you are using
       -h, --help            show this help message and exit
       -d, --debug           enter verbose/debug mode
 
@@ -67,19 +67,15 @@ Usage
                             Name of sheet in excel file
 
     # run script
-    correctMLG.py -e Test_MLG.xlsx -s test
+    MLGassign.py -e Test_MLG.xlsx -s test
 
 
 
 
 .. |PythonVersions| image:: https://img.shields.io/badge/python-3.7+-blue.svg
    :target: https://www.python.org/downloads
-   :alt: Python 2.7+/3.6+
+   :alt: Python /3.7+
 
-.. |PypiPackage| image:: https://badge.fury.io/py/appmlg.svg
-   :target: https://pypi.org/project/pibooth-pimoroni11x7
+.. |PypiPackage| image:: https://badge.fury.io/py/MLGassign.svg
+   :target: https://pypi.org/project/MLGassign
    :alt: PyPi package
-
-.. |Downloads| image:: https://img.shields.io/pypi/dm/pibooth-pimoroni11x7?color=purple
-   :target: https://pypi.org/project/pibooth-pimoroni11x7
-   :alt: PyPi downloads

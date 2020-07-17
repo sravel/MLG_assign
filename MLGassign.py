@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# @package correctMLG.py
+# @package MLGassign.py
 # @author Sebastien Ravel
 
 """
@@ -21,14 +21,11 @@ import sys
 import argparse
 from pathlib import Path
 from datetime import datetime
-
-from time import localtime, strftime
-
 import numpy as np
 import pandas as pd
 from openpyxl import load_workbook
 
-from gooey import Gooey, GooeyParser
+# from gooey import Gooey, GooeyParser
 # remove pandas header styles
 # this avoids the restriction that xlsxwriter cannot
 # format cells where formatting was already applied
@@ -150,31 +147,31 @@ def existant_file(x):
     return Path(x).resolve()
 
 
-@Gooey(
-        # advanced=True,
-        # header_height=250,
-        # header_bg_color="#f0f0f0",
-
-        # dump_build_config=True,
-        # image_dir="./includes/"
-)
-def main():
-    parser = GooeyParser(prog='correctMLG.py',
-                         description=descriptionTools,
-                         epilog=epilogTools)
-
-    inOutMandatory = parser.add_argument_group('Input mandatory infos for running', gooey_options={
-            'columns': 1
-    })
-
-    inOutMandatory.add_argument('-x', '--excel', metavar="Excel filename", widget='FileChooser', type=existant_file,
-                                required=True, dest='excel_file', help='matrice excel file')
-    inOutMandatory.add_argument('-s', '--sheet', metavar="Name of Sheet", required=True, dest='sheet_name',
-                                help='name of sheet in excel file')
-
-    args = parser.parse_args()
-
-    return args
+# @Gooey(
+#         # advanced=True,
+#         # header_height=250,
+#         # header_bg_color="#f0f0f0",
+#
+#         # dump_build_config=True,
+#         # image_dir="./includes/"
+# )
+# def main():
+#     parser = GooeyParser(prog='MLGassign.py',
+#                          description=descriptionTools,
+#                          epilog=epilogTools)
+#
+#     inOutMandatory = parser.add_argument_group('Input mandatory infos for running', gooey_options={
+#             'columns': 1
+#     })
+#
+#     inOutMandatory.add_argument('-x', '--excel', metavar="Excel filename", widget='FileChooser', type=existant_file,
+#                                 required=True, dest='excel_file', help='matrice excel file')
+#     inOutMandatory.add_argument('-s', '--sheet', metavar="Name of Sheet", required=True, dest='sheet_name',
+#                                 help='name of sheet in excel file')
+#
+#     args = parser.parse_args()
+#
+#     return args
 
 
 ###################################################
@@ -189,6 +186,7 @@ if __name__ == "__main__":
                                help=f'Use if you want to know which version of {__file__} you are using')
     inOutOptional.add_argument('-h', '--help', action='help', help=f'show this help message and exit')
     inOutOptional.add_argument('-d', '--debug', action='store_true', help='enter verbose/debug mode')
+    # inOutOptional.add_argument('-g', '--gui', action='store_true', help='use graphic mode')
 
     parserMandatory = argparse.ArgumentParser(
             parents=[parserOther],
@@ -209,7 +207,8 @@ if __name__ == "__main__":
     args = parserMandatory.parse_args()
 
     # Check parameters
-    # args = main()
+    # if args.gui:
+    #     args = main()
 
     # Welcome message
     print(
