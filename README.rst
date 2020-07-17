@@ -42,7 +42,7 @@ Install
 ::
 
     # not working yet, in development
-    pip3 install MLGassign
+    pip3 install MLG_assign
 
 
 Usage
@@ -52,7 +52,7 @@ Usage
 .. code-block:: bash
 
     # see help
-    MLGassign.py -h
+    MLG_assign -h
 
     Input infos not mandatory:
       -v, --version         Use if you want to know which version of
@@ -67,7 +67,7 @@ Usage
                             Name of sheet in excel file
 
     # run script
-    MLGassign.py -e Test_MLG.xlsx -s test
+    MLG_assign -e Test_MLG.xlsx -s test
 
 
 
@@ -76,6 +76,6 @@ Usage
    :target: https://www.python.org/downloads
    :alt: Python /3.7+
 
-.. |PypiPackage| image:: https://badge.fury.io/py/MLGassign.svg
-   :target: https://pypi.org/project/MLGassign
+.. |PypiPackage| image:: https://badge.fury.io/py/MLG_assign.svg
+   :target: https://pypi.org/project/MLG_assign
    :alt: PyPi package

@@ -38,8 +38,7 @@ pandas.set_option('display.precision', 0)  # formate le nombre de chiffre après
 ##################################################
 # Variables Globales
 
-version = "Release 1.0, 25nd of February, 2019"
-shortVersion = 1.0
+__version__ = "1.0.1"
 epilogTools = ""
 
 descriptionTools = f"""
@@ -53,7 +52,7 @@ descriptionTools = f"""
 {'_' * 67}
 
 #\tIntellectual property belongs to CIRAD BGPI - Written by Sébastien Ravel
-#\t{version}
+#\t{__version__}
 {'#' * 80}
 """
 
@@ -173,16 +172,12 @@ def existant_file(x):
 #
 #     return args
 
-
-###################################################
-# Main code
-##################################################
-if __name__ == "__main__":
+def main():
 
     parserOther = argparse.ArgumentParser(add_help=False)
 
     inOutOptional = parserOther.add_argument_group('Input infos not mandatory')
-    inOutOptional.add_argument('-v', '--version', action='version', version=version,
+    inOutOptional.add_argument('-v', '--version', action='version', version=__version__,
                                help=f'Use if you want to know which version of {__file__} you are using')
     inOutOptional.add_argument('-h', '--help', action='help', help=f'show this help message and exit')
     inOutOptional.add_argument('-d', '--debug', action='store_true', help='enter verbose/debug mode')
@@ -212,7 +207,7 @@ if __name__ == "__main__":
 
     # Welcome message
     print(
-            f"""{"#" * 80}\n#{Path(__file__).stem + " " + version:^78}#\n{"#" * 80}\nStart time: {datetime.now():%d-%m-%Y at %H:%M:%S}\nCommande line run: {" ".join(sys.argv)}\n""")
+            f"""{"#" * 80}\n#{Path(__file__).stem + " " + __version__:^78}#\n{"#" * 80}\nStart time: {datetime.now():%d-%m-%Y at %H:%M:%S}\nCommande line run: {" ".join(sys.argv)}\n""")
     # resume to user
     print(" - Intput Info:")
     for k, v in vars(args).items():
@@ -300,3 +295,10 @@ if __name__ == "__main__":
         sys.exit(1)
 
     print(f"""\nStop time: {datetime.now():%d-%m-%Y at %H:%M:%S}\n{'#' * 80}\n#{'End of execution':^78}#\n{"#" * 80}""")
+
+
+###################################################
+# Main code
+##################################################
+if __name__ == "__main__":
+    main()

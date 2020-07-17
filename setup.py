@@ -4,19 +4,19 @@
 import sys
 from io import open
 import os.path as osp
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 HERE = osp.abspath(osp.dirname(__file__))
 sys.path.insert(0, HERE)
-import MLGassign as MLGassign
+import MLG_assign
 
 
 def main():
     setup(
-        name=MLGassign.__name__,
-        version=MLGassign.__version__,
-        description=MLGassign.__doc__,
+        name=MLG_assign.__name__,
+        version=MLG_assign.__version__,
+        description="Application to add MLG",
         long_description=open(osp.join(HERE, 'README.rst'), encoding='utf-8').read(),
         long_description_content_type='text/x-rst',
         classifiers=[
@@ -24,14 +24,14 @@ def main():
             'Environment :: Other Environment',
             'Intended Audience :: Developers',
             'Intended Audience :: End Users/Desktop',
-            'License :: OSI Approved :: LGPL License',
+            'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
             'Operating System :: POSIX :: Linux',
-            'Programming Language :: Python :: 3.7+',
+            'Programming Language :: Python :: 3.7',
             'Natural Language :: English',
         ],
         author="Sébastien Ravel",
-        url="https://github.com/sravel/MLGassign",
-        download_url="https://github.com/sravel/MLGassign/archive/{}.tar.gz".format(MLGassign.__version__),
+        url="https://github.com/sravel/MLG_assign",
+        download_url="https://github.com/sravel/MLG_assign/archive/{}.tar.gz".format(MLG_assign.__version__),
         license='LGPL license',
         platforms=['unix', 'linux'],
         keywords=[
@@ -40,9 +40,13 @@ def main():
             'genotyped',
             'genetics'
         ],
-        py_modules=['MLGassign'],
+        packages=find_packages(),
+        package_data={
+                    'MLG_assign'         : ['*.ini'],
+                    'MLG_assign.excel'   : ['*.xlsx'],
+        },
+        include_package_data=True,
         install_requires=[
-            'python>=3.7',
             'pandas>=1.0.0',
             'openpyxl>=2.6.0'
         ],
@@ -51,7 +55,7 @@ def main():
                 {'universal': True}
         },
         zip_safe=False,  # Don't install the lib as an .egg zipfile
-        entry_points={'MLGassign': ["MLGassign = MLGassign"]},
+        entry_points={'console_scripts': ["MLG-assign = MLG_assign:main"]},
     )
 
 if __name__ == '__main__':
