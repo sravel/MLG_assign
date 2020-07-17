@@ -2,9 +2,9 @@
 Multi-Locus Genotypes assign
 =============================
 
+.. contents:: Table of Contents
+   :depth: 2
 
-.. toctree::
-   :maxdepth: 2
 
 
 About this package
