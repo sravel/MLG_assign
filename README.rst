@@ -41,7 +41,6 @@ Install
 
 ::
 
-    # not working yet, in development
     pip3 install MLG_assign
 
 
@@ -69,13 +68,16 @@ Usage
     # run script
     MLG_assign -e Test_MLG.xlsx -s test
 
+Test data
+---------
 
+Data test avail at: https://github.com/sravel/MLG_assign/blob/master/Test_MLG.xlsx
 
 
 .. |PythonVersions| image:: https://img.shields.io/badge/python-3.7+-blue.svg
    :target: https://www.python.org/downloads
    :alt: Python /3.7+
 
-.. |PypiPackage| image:: https://badge.fury.io/py/MLG_assign.svg
-   :target: https://pypi.org/project/MLG_assign
-   :alt: PyPi package
+.. |PypiPackage| image:: https://badge.fury.io/py/MLG-assign.svg
+   :target: https://badge.fury.io/py/MLG-assign
+   :alt: PyPi MLG-assign
