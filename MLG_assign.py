@@ -38,7 +38,7 @@ pandas.set_option('display.precision', 0)  # formate le nombre de chiffre après
 ##################################################
 # Variables Globales
 
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 epilogTools = ""
 
 descriptionTools = f"""
